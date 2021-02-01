@@ -11,15 +11,16 @@ import sys
 import io
 from typing import List
 
-BINOPS = { lex.TokenCat.PLUS : expr.Plus,
-           lex.TokenCat.TIMES: expr.Times,
-           lex.TokenCat.DIV: expr.Div,
-           lex.TokenCat.MINUS:  expr.Minus
-        }
-
-UNOPS = { lex.TokenCat.NEG : expr.Neg,
-          lex.TokenCat.ABS : expr.Abs
+BINOPS = {lex.TokenCat.PLUS: expr.Plus,
+          lex.TokenCat.TIMES: expr.Times,
+          lex.TokenCat.DIV: expr.Div,
+          lex.TokenCat.MINUS: expr.Minus
           }
+
+UNOPS = {lex.TokenCat.NEG: expr.Neg,
+         lex.TokenCat.ABS: expr.Abs
+         }
+
 
 def rpn_parse(text: str) -> List[expr.Expr]:
     """Parse text in reverse Polish notation
@@ -52,6 +53,7 @@ def rpn_parse(text: str) -> List[expr.Expr]:
             stack.append(expr.Assign(right, left))
     return stack
 
+
 def calc(text: str):
     """Read and evaluate a single line formula."""
     try:
@@ -72,21 +74,19 @@ def calc(text: str):
         for exp in stack:
             print(f"{exp} => {exp.eval()}")
 
+
 def rpn_calc():
     txt = input("Expression (return to quit):")
     while len(txt.strip()) > 0:
-        calc(txt)
+        if txt == "clr":
+            expr.env_clear()
+            print("Cleared environment.")
+        else:
+            calc(txt)
         txt = input("Expression (return to quit):")
     print("Bye! Thanks for the math!")
-
 
 
 if __name__ == "__main__":
     """RPN Calculator as main program"""
     rpn_calc()
-
-
-
-
-
-
